@@ -103,3 +103,6 @@ MLT_ENV/
 *.iml
 out
 gen
+
+# 自定义忽略
+auto_encoder/MNIST_data
