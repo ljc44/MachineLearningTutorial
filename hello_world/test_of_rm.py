@@ -12,8 +12,8 @@ import tensorflow as tf
 mat = [[1., 2.], [3., 4.]]
 
 rm = tf.reduce_mean(mat)
-rm_col = tf.reduce_mean(mat, 0)  # 列
-rm_row = tf.reduce_mean(mat, 1)  # 列
+rm_col = tf.reduce_mean(mat, 0)  # 保留行
+rm_row = tf.reduce_mean(mat, 1)  # 保留列
 
 sess = tf.Session()
 print sess.run(rm)

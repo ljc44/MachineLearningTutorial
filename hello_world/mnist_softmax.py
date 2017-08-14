@@ -19,6 +19,14 @@
 
 See extensive documentation at
 https://www.tensorflow.org/get_started/mnist/beginners
+
+回归分析：https://zh.wikipedia.org/wiki/%E8%BF%B4%E6%AD%B8%E5%88%86%E6%9E%90
+反向传播：
+https://zhuanlan.zhihu.com/p/25081671
+https://zhuanlan.zhihu.com/p/25416673
+随机梯度下降：
+https://www.zhihu.com/question/28728418
+https://www.zhihu.com/question/27012077
 """
 from __future__ import absolute_import
 from __future__ import division
@@ -36,13 +44,14 @@ FLAGS = None  # 全局变量
 def main(_):
     mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True)  # 加载数据源
 
-    x = tf.placeholder(tf.float32, [None, 784])  # 数据输入
+    x = tf.placeholder(tf.float32, [None, 784])  # 数据输入，没有
     W = tf.Variable(tf.zeros([784, 10]))
     b = tf.Variable(tf.zeros([10]))
-    y = tf.matmul(x, W) + b
+    y = tf.matmul(x, W) + b  # Softmax Regression，softmax(y)
 
     y_ = tf.placeholder(tf.float32, [None, 10])  # 标签输入
 
+    # cross_entropy = tf.reduce_mean(tf.reduce_sum(-1 * (y_ * tf.log(tf.nn.softmax(y))), reduction_indices=[1]))
     cross_entropy = tf.reduce_mean(
         tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y))  # 损失函数
     train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)  # 优化器
