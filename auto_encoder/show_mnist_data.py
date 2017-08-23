@@ -14,12 +14,13 @@ from project_utils import *
 import matplotlib.pyplot as plt
 from tensorflow.examples.tutorials.mnist import input_data
 
+# 加载数据
 mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
-
 images = mnist.test.images  # 图片
 labels = mnist.test.labels  # 标签
-size = len(labels)
 
+# 存储图片
+size = len(labels)
 for i in range(size):
     pxl = np.array(images[i])  # 像素
     img = pxl.reshape((28, 28))  # 图片
@@ -28,20 +29,19 @@ for i in range(size):
     if i == 100:
         break
 
+# 合并图片
 large_size = 28 * 10
 large_img = Image.new('RGBA', (large_size, large_size))
-
 paths_list, _, __ = listdir_files('./IMAGE_data/test/')
-
 for i in range(100):
     img = Image.open(paths_list[i])
     loc = ((int(i / 10) * 28), (i % 10) * 28)
     large_img.paste(img, loc)
 large_img.save('./IMAGE_data/merged.png')
 
+# 其他的图片存储方式
 pixel = np.array(images[0])  # 784维的数据
 label = np.argmax(labels[0])  # 找到标签
-
 image = pixel.reshape((28, 28))  # 转换成28*28维的矩阵
 
 # -------------------- scipy模式 -------------------- #
