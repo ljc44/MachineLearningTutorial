@@ -22,16 +22,17 @@ class AdditiveGaussianNoiseAutoencoder(object):
                                            self.weights['b1']))
         self.reconstruction = tf.add(tf.matmul(self.hidden, self.weights['w2']), self.weights['b2'])
 
-        # cost
+        # cost，0.5*(x - x_)^2，求和
         self.cost = 0.5 * tf.reduce_sum(tf.pow(tf.subtract(self.reconstruction, self.x), 2.0))
         self.optimizer = optimizer.minimize(self.cost)
 
         init = tf.global_variables_initializer()
         self.sess = tf.Session()
-        self.sess.run(init)
+        self.sess.run(init)  # 执行图
 
     def _initialize_weights(self):
         all_weights = dict()
+        # 使用xavier_initializer初始化
         all_weights['w1'] = tf.get_variable("w1", shape=[self.n_input, self.n_hidden],
                                             initializer=tf.contrib.layers.xavier_initializer())
         all_weights['b1'] = tf.Variable(tf.zeros([self.n_hidden], dtype=tf.float32))
