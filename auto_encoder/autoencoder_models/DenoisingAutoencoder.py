@@ -41,9 +41,8 @@ class AdditiveGaussianNoiseAutoencoder(object):
         return all_weights
 
     def partial_fit(self, X):
-        cost, opt = self.sess.run((self.cost, self.optimizer), feed_dict={self.x: X,
-                                                                          self.scale: self.training_scale
-                                                                          })
+        cost, opt = self.sess.run((self.cost, self.optimizer),
+                                  feed_dict={self.x: X, self.scale: self.training_scale})
         return cost
 
     def calc_total_cost(self, X):
