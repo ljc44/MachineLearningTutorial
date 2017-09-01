@@ -28,7 +28,7 @@ b2 = tf.Variable(tf.zeros([10]))
 x = tf.placeholder(tf.float32, [None, in_units])  # 任意个in_units维的数
 keep_prob = tf.placeholder(tf.float32)  # dropout的保留比率
 
-hidden1 = tf.nn.relu(tf.matmul(x, W1) + b1)  # 隐含层
+hidden1 = tf.nn.relu(tf.matmul(x, W1) + b1)  # 隐含层，校正线性单元：Rectified Linear Unit
 hidden1_drop = tf.nn.dropout(hidden1, keep_prob)  # 隐含层的dropout
 y = tf.nn.softmax(tf.matmul(hidden1, W2) + b2)  # 输出层
 
