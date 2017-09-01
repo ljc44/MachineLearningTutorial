@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from tensorflow.examples.tutorials.mnist import input_data
 
 # 加载数据
-mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
+mnist = input_data.read_data_sets('../MNIST_data', one_hot=True)
 images = mnist.test.images  # 图片
 labels = mnist.test.labels  # 标签
 
