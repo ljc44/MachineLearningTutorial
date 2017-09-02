@@ -26,11 +26,7 @@ FLAGS = None
 
 
 def train():
-    # Import data，输入数据
-    mnist = input_data.read_data_sets(FLAGS.data_dir,
-                                      one_hot=True,
-                                      fake_data=FLAGS.fake_data)
-
+    mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True, fake_data=FLAGS.fake_data)  # 加载数据
     sess = tf.InteractiveSession()
     # Create a multilayer model.
 
@@ -41,7 +37,7 @@ def train():
 
     with tf.name_scope('input_reshape'):
         image_shaped_input = tf.reshape(x, [-1, 28, 28, 1])
-        tf.summary.image('input', image_shaped_input, 10)  # TODO：10是什么意思？？？
+        tf.summary.image('input', image_shaped_input, 10)  # 10表示只存储10张
 
     # We can't initialize these variables to 0 - the network will get stuck.
     def weight_variable(shape):  # 权重
@@ -97,7 +93,7 @@ def train():
         dropped = tf.nn.dropout(hidden1, keep_prob)  # 执行dropout参数
 
     # Do not apply softmax activation yet, see below.
-    y = nn_layer(dropped, 500, 10, 'layer2', act=tf.identity)
+    y = nn_layer(dropped, 500, 10, 'layer2', act=tf.identity)  # 未使用激活函数
 
     with tf.name_scope('cross_entropy'):
         # The raw formulation of cross-entropy,
@@ -131,7 +127,6 @@ def train():
     merged = tf.summary.merge_all()
     train_writer = tf.summary.FileWriter(FLAGS.log_dir + '/train', sess.graph)
     test_writer = tf.summary.FileWriter(FLAGS.log_dir + '/test')
-    tf.global_variables_initializer().run()
 
     # Train the model, and also write summaries.
     # Every 10th step, measure test-set accuracy, and write test summaries
@@ -148,6 +143,9 @@ def train():
             k = 1.0
         return {x: xs, y_: ys, keep_prob: k}
 
+    tf.global_variables_initializer().run()
+
+    saver = tf.train.Saver()  # 存储checkpoint数据
     for i in range(FLAGS.max_steps):
         if i % 10 == 0:  # Record summaries and test-set accuracy
             summary, acc = sess.run([merged, accuracy], feed_dict=feed_dict(False))  # feed测试数据
@@ -163,6 +161,7 @@ def train():
                                       run_metadata=run_metadata)
                 train_writer.add_run_metadata(run_metadata, 'step%03d' % i)
                 train_writer.add_summary(summary, i)
+                saver.save(sess, FLAGS.log_dir + "/model.ckpt", i)  # 存储checkpoint数据
                 print('Adding run metadata for', i)
             else:  # Record a summary
                 summary, _ = sess.run([merged, train_step], feed_dict=feed_dict(True))  # feed训练数据
@@ -180,8 +179,7 @@ def main(_):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--fake_data', nargs='?', const=True, type=bool,
-                        default=False,
+    parser.add_argument('--fake_data', nargs='?', const=True, type=bool, default=False,
                         help='If true, uses fake data for unit testing.')
     parser.add_argument('--max_steps', type=int, default=1000,  # 最大步数 1000
                         help='Number of steps to run trainer.')
@@ -189,15 +187,12 @@ if __name__ == '__main__':
                         help='Initial learning rate')
     parser.add_argument('--dropout', type=float, default=0.9,  # Dropout的保留率 0.9
                         help='Keep probability for training dropout.')
-    parser.add_argument(  # 数据目录
-        '--data_dir',
-        type=str,
-        default=os.path.join(os.getenv('TEST_TMPDIR', '/tmp'), 'tensorflow/mnist/input_data'),
-        help='Directory for storing input data')
-    parser.add_argument(  # Log目录
-        '--log_dir',
-        type=str,
-        default=os.path.join(os.getenv('TEST_TMPDIR', '/tmp'), 'tensorflow/mnist/logs/mnist_with_summaries'),
-        help='Summaries log directory')
+    parser.add_argument('--data_dir', type=str,  # 数据目录
+                        default=os.path.join(os.getenv('TEST_TMPDIR', '/tmp'), 'tensorflow/mnist/input_data'),
+                        help='Directory for storing input data')
+    parser.add_argument('--log_dir', type=str,  # Log目录
+                        default=os.path.join(os.getenv('TEST_TMPDIR', '/tmp'),
+                                             'tensorflow/mnist/logs/mnist_with_summaries'),
+                        help='Summaries log directory')
     FLAGS, unparsed = parser.parse_known_args()
     tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
