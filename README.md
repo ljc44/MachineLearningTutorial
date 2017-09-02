@@ -7,3 +7,5 @@
 2. [自编码器 AutoEncoder](http://www.jianshu.com/p/9ccf67ccd44b)
 
 3. [多层感知机 MLP](http://www.jianshu.com/p/ac5c1d83dc71)
+
+4. [模型可视化 TensorBoard](http://www.jianshu.com/p/f3e51ee564ab)
