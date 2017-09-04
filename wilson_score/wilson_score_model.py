@@ -15,9 +15,7 @@ def wilson_score(pos, total, p_z=2.):
     :param p_z: 正太分布的分位数
     :return: 威尔逊得分
     """
-    if total <= 0. or pos < 0.:
-        return 0.
-    pos_rat = float(pos) / float(total)  # 正例比率
+    pos_rat = pos * 1. / total * 1.  # 正例比率
     score = (pos_rat + (np.square(p_z) / (2. * total))
              - ((p_z / (2. * total)) * np.sqrt(4. * total * (1. - pos_rat) * pos_rat + np.square(p_z)))) / \
             (1. + np.square(p_z) / total)

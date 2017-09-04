@@ -22,9 +22,9 @@ import numpy as np
 # fig.colorbar(cs, ax=axs)
 #
 # plt.show()
-from wilson_score.wilson_score import wilson_score
+from wilson_score.wilson_score_model import wilson_score
 
-value = np.linspace(0.01, 100, 1000)
+value = np.linspace(0.01, 30, 1000)
 u, v = np.meshgrid(value, value)
 
 fig, ax = plt.subplots(1, 2)
