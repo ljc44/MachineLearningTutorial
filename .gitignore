@@ -106,6 +106,6 @@ gen
 
 # 自定义忽略
 /MNIST_data
-/auto_encoder/IMAGE_data
-/multi_gpu_train/cifar10_data
+auto_encoder/IMAGE_data
 multi_gpu_train/cifar10_data/
+movie_ranking/data
