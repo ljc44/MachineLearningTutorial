@@ -1,27 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# Created by C.L.Wang
 
 import matplotlib.pyplot as plt
-# Created by C.L.Wang
 import numpy as np
 
-# fig, axs = plt.subplots(1, 1)
-#
-# x = np.linspace(0, 1, 100)
-# X, Y = np.meshgrid(x, x)
-# Z = np.sin(X) * np.sin(Y)
-#
-# levels = np.linspace(-1, 1, 40)
-#
-# zdata = np.sin(8 * X) * np.sin(8 * Y)
-#
-# # cs = axs[0].contourf(X, Y, zdata, levels=levels)
-# # fig.colorbar(cs, ax=axs[0], format="%.2f")
-#
-# cs = axs.contourf(X, Y, zdata, levels=[-1, 0, 1])
-# fig.colorbar(cs, ax=axs)
-#
-# plt.show()
 from wilson_score.wilson_score_model import wilson_score
 
 value = np.linspace(0.01, 30, 1000)
