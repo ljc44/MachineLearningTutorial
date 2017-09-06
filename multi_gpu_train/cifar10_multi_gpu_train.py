@@ -144,17 +144,19 @@ def average_gradients(tower_grads):
 
 def train():
     """Train CIFAR-10 for a number of steps."""
-    with tf.Graph().as_default(), tf.device('/cpu:0'):
+    with tf.Graph().as_default(), tf.device('/cpu:0'):  # 默认使用默认CPU0
         # Create a variable to count the number of train() calls. This equals the
         # number of batches processed * FLAGS.num_gpus.
+        # 参数: trainable是False，不用训练，全局步数就是global_step，默认设置。
         global_step = tf.get_variable(
             'global_step', [],
             initializer=tf.constant_initializer(0), trainable=False)
 
         # Calculate the learning rate schedule.
+        # 每个批次的训练数，
         num_batches_per_epoch = (cifar10.NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN /
-                                 FLAGS.batch_size)
-        decay_steps = int(num_batches_per_epoch * cifar10.NUM_EPOCHS_PER_DECAY)
+                                 FLAGS.batch_size)  # batch_size是128，50000 / 128=390.625
+        decay_steps = int(num_batches_per_epoch * cifar10.NUM_EPOCHS_PER_DECAY)  # 每个批次需要衰减的次数
 
         # Decay the learning rate exponentially based on the number of steps.
         lr = tf.train.exponential_decay(cifar10.INITIAL_LEARNING_RATE,
