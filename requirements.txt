@@ -3,6 +3,7 @@ bleach==1.5.0
 cycler==0.10.0
 funcsigs==1.0.2
 functools32==3.2.3.post2
+happybase==1.1.0
 html5lib==0.9999999
 Markdown==2.6.8
 matplotlib==2.0.2
@@ -13,14 +14,19 @@ opencv-python==3.3.0.9
 pandas==0.20.3
 pbr==3.1.1
 Pillow==4.2.1
+ply==3.10
 protobuf==3.3.0
+pyhs2==0.6.0
 pyparsing==2.2.0
 python-dateutil==2.6.1
 pytz==2017.2
+sasl==0.2.1
 scikit-learn==0.19.0
 scipy==0.19.1
 six==1.10.0
 sklearn==0.0
 subprocess32==3.2.7
 tensorflow==1.2.1
+thrift==0.10.0
+thriftpy==0.3.9
 Werkzeug==0.12.2
