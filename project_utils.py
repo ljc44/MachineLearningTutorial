@@ -432,3 +432,27 @@ def listdir_files(root_dir, ext=None):
         for name in dirNames:
             dirs_list.append(name)
     return paths_list, dirs_list, names_list
+
+
+def time_elapsed(start, end):
+    """
+    输出时间
+    :param start: 开始
+    :param end: 结束
+    :return: 
+    """
+    hours, rem = divmod(end - start, 3600)
+    minutes, seconds = divmod(rem, 60)
+    return "{:0>2}:{:0>2}:{:05.2f}".format(int(hours), int(minutes), seconds)
+
+
+def batch(iterable, n=1):
+    """
+    批次迭代器
+    :param iterable: 迭代器
+    :param n: 次数
+    :return: 
+    """
+    l = len(iterable)
+    for ndx in range(0, l, n):
+        yield iterable[ndx:min(ndx + n, l)]

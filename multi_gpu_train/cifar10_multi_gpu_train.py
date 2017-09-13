@@ -156,79 +156,79 @@ def train():
         # 每个批次的训练数，
         num_batches_per_epoch = (cifar10.NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN /
                                  FLAGS.batch_size)  # batch_size是128，50000 / 128=390.625
-        decay_steps = int(num_batches_per_epoch * cifar10.NUM_EPOCHS_PER_DECAY)  # 每个批次需要衰减的次数
+        decay_steps = int(num_batches_per_epoch * cifar10.NUM_EPOCHS_PER_DECAY)  # 每个批次需要衰减的次数
 
         # Decay the learning rate exponentially based on the number of steps.
         lr = tf.train.exponential_decay(cifar10.INITIAL_LEARNING_RATE,
                                         global_step,
                                         decay_steps,
                                         cifar10.LEARNING_RATE_DECAY_FACTOR,
-                                        staircase=True)
+                                        staircase=True)  # 计算学习率，lr=Learning Rate
 
         # Create an optimizer that performs gradient descent.
-        opt = tf.train.GradientDescentOptimizer(lr)
+        opt = tf.train.GradientDescentOptimizer(lr)  # 参数是学习率
 
         # Get images and labels for CIFAR-10.
-        images, labels = cifar10.distorted_inputs()
+        images, labels = cifar10.distorted_inputs()  # 获取图片资源和标签
         batch_queue = tf.contrib.slim.prefetch_queue.prefetch_queue(
-            [images, labels], capacity=2 * FLAGS.num_gpus)
+            [images, labels], capacity=2 * FLAGS.num_gpus)  # 使用预加载的队列
         # Calculate the gradients for each model tower.
         tower_grads = []
-        with tf.variable_scope(tf.get_variable_scope()):
-            for i in xrange(FLAGS.num_gpus):
-                with tf.device('/gpu:%d' % i):
+        with tf.variable_scope(tf.get_variable_scope()):  # 变量的名称
+            for i in xrange(FLAGS.num_gpus):  # 创建GUP的循环
+                with tf.device('/gpu:%d' % i):  # 指定GPU
                     with tf.name_scope('%s_%d' % (cifar10.TOWER_NAME, i)) as scope:
                         # Dequeues one batch for the GPU
                         image_batch, label_batch = batch_queue.dequeue()
                         # Calculate the loss for one tower of the CIFAR model. This function
                         # constructs the entire CIFAR model but shares the variables across
                         # all towers.
-                        loss = tower_loss(scope, image_batch, label_batch)
+                        loss = tower_loss(scope, image_batch, label_batch)  # 获得损失函数
 
                         # Reuse variables for the next tower.
-                        tf.get_variable_scope().reuse_variables()
+                        tf.get_variable_scope().reuse_variables()  # 重用变量
 
                         # Retain the summaries from the final tower.
-                        summaries = tf.get_collection(tf.GraphKeys.SUMMARIES, scope)
+                        summaries = tf.get_collection(tf.GraphKeys.SUMMARIES, scope)  # 创建存储信息
 
                         # Calculate the gradients for the batch of data on this CIFAR tower.
-                        grads = opt.compute_gradients(loss)
+                        grads = opt.compute_gradients(loss)  # 计算梯度
 
                         # Keep track of the gradients across all towers.
-                        tower_grads.append(grads)
+                        tower_grads.append(grads)  # 添加梯度，tower_grads是外部变量，会存储全部梯度信息
 
         # We must calculate the mean of each gradient. Note that this is the
         # synchronization point across all towers.
-        grads = average_gradients(tower_grads)
+        grads = average_gradients(tower_grads)  # 求梯度的平均值
 
         # Add a summary to track the learning rate.
         summaries.append(tf.summary.scalar('learning_rate', lr))
 
         # Add histograms for gradients.
-        for grad, var in grads:
+        for grad, var in grads:  # 存储数据
             if grad is not None:
                 summaries.append(tf.summary.histogram(var.op.name + '/gradients', grad))
 
         # Apply the gradients to adjust the shared variables.
-        apply_gradient_op = opt.apply_gradients(grads, global_step=global_step)
+        apply_gradient_op = opt.apply_gradients(grads, global_step=global_step)  # 将梯度应用于变量
 
         # Add histograms for trainable variables.
-        for var in tf.trainable_variables():
+        for var in tf.trainable_variables():  # 存储数据
             summaries.append(tf.summary.histogram(var.op.name, var))
 
         # Track the moving averages of all trainable variables.
         variable_averages = tf.train.ExponentialMovingAverage(
-            cifar10.MOVING_AVERAGE_DECAY, global_step)
-        variables_averages_op = variable_averages.apply(tf.trainable_variables())
+            cifar10.MOVING_AVERAGE_DECAY, global_step)  # 求变量的均值
+        variables_averages_op = variable_averages.apply(tf.trainable_variables())  # 将变量的均值应用于操作
 
         # Group all updates to into a single train op.
-        train_op = tf.group(apply_gradient_op, variables_averages_op)
+        train_op = tf.group(apply_gradient_op, variables_averages_op)  # 训练操作
 
         # Create a saver.
-        saver = tf.train.Saver(tf.global_variables())
+        saver = tf.train.Saver(tf.global_variables())  # 创建变量存储器
 
         # Build the summary operation from the last tower summaries.
-        summary_op = tf.summary.merge(summaries)
+        summary_op = tf.summary.merge(summaries)  # 合并统计数据
 
         # Build an initialization operation to run below.
         init = tf.global_variables_initializer()
