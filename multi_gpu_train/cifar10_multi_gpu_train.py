@@ -53,7 +53,7 @@ import numpy as np
 import tensorflow as tf
 from six.moves import xrange  # pylint: disable=redefined-builtin
 
-from multi_gpu_train import cifar10
+from main.multi_gpu_train import cifar10
 
 FLAGS = tf.app.flags.FLAGS
 
@@ -244,7 +244,7 @@ def train():
         # Start the queue runners.
         tf.train.start_queue_runners(sess=sess)
 
-        summary_writer = tf.summary.FileWriter(FLAGS.train_dir, sess.graph)
+        summary_writer = tf.summary.FileWriter(FLAGS.train_dir, sess.graph)  # 写入summary的地址
 
         for step in xrange(FLAGS.max_steps):
             start_time = time.time()
