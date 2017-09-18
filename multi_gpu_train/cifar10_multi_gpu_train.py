@@ -46,14 +46,18 @@ from __future__ import print_function
 
 import os.path
 import re
+import sys
 import time
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
 from datetime import datetime
 
 import numpy as np
 import tensorflow as tf
 from six.moves import xrange  # pylint: disable=redefined-builtin
 
-from main.multi_gpu_train import cifar10
+from multi_gpu_train import cifar10
 
 FLAGS = tf.app.flags.FLAGS
 
