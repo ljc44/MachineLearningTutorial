@@ -12,10 +12,8 @@ def get_available_gpus():
     :return: GPU个数
     """
     local_device_protos = device_lib.list_local_devices()
-    print [x.name for x in local_device_protos]
-    # gpu_names = [x.name for x in local_device_protos if x.device_type == 'GPU']
-    gpu_names = [x.name for x in local_device_protos]
-    return gpu_names
+    print "all: %s" % [x.name for x in local_device_protos]
+    print "gpu: %s" % [x.name for x in local_device_protos if x.device_type == 'GPU']
 
 
-print get_available_gpus()
+get_available_gpus()
