@@ -182,7 +182,8 @@ def train():
             for i in xrange(FLAGS.num_gpus):  # 创建GUP的循环
                 with tf.device('/gpu:%d' % i):  # 指定GPU
                     with tf.name_scope('%s_%d' % (cifar10.TOWER_NAME, i)) as scope:
-                        print ('running: %s_%d' % (cifar10.TOWER_NAME, i))
+                        # 含有几个GPU执行几个，没有不执行
+                        print('running: %s_%d' % (cifar10.TOWER_NAME, i))
                         # Dequeues one batch for the GPU
                         image_batch, label_batch = batch_queue.dequeue()
                         # Calculate the loss for one tower of the CIFAR model. This function
@@ -279,11 +280,14 @@ def train():
 
 
 def main(argv=None):  # pylint: disable=unused-argument
-    cifar10.maybe_download_and_extract()
-    if tf.gfile.Exists(FLAGS.train_dir):
-        tf.gfile.DeleteRecursively(FLAGS.train_dir)
-    tf.gfile.MakeDirs(FLAGS.train_dir)
-    train()
+    cifar10.maybe_download_and_extract()  # 下载数据
+
+    # 目录处理的标准流程，使用tf.gfile模块
+    if tf.gfile.Exists(FLAGS.train_dir):  # 如果存在已有的训练数据
+        tf.gfile.DeleteRecursively(FLAGS.train_dir)  # 则递归删除
+    tf.gfile.MakeDirs(FLAGS.train_dir)  # 新建目录
+
+    train()  # 核心方法，训练
 
 
 if __name__ == '__main__':
