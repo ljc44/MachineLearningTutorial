@@ -182,7 +182,7 @@ def train():
             for i in xrange(FLAGS.num_gpus):  # 创建GUP的循环
                 with tf.device('/gpu:%d' % i):  # 指定GPU
                     with tf.name_scope('%s_%d' % (cifar10.TOWER_NAME, i)) as scope:
-                        print 'running: %s_%d' % (cifar10.TOWER_NAME, i)
+                        print ('running: %s_%d' % (cifar10.TOWER_NAME, i))
                         # Dequeues one batch for the GPU
                         image_batch, label_batch = batch_queue.dequeue()
                         # Calculate the loss for one tower of the CIFAR model. This function
