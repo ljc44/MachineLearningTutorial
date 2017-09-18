@@ -39,6 +39,9 @@ import os
 import re
 import sys
 import tarfile
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 import tensorflow as tf
 from six.moves import urllib
