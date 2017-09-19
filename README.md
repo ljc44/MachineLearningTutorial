@@ -17,3 +17,8 @@ Email: morndragon@126.com
 
 6. [TensorFlow 的 分布式架构](http://www.jianshu.com/p/b6e25d0a9399)
 
+其余：
+
+- [威尔逊得分 Wilson Score 排序算法](http://www.jianshu.com/p/4d2b45918958)
+
+- [百度 OCR 文字识别的接口测试](http://www.jianshu.com/p/a1688fed63e3)
