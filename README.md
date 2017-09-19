@@ -1,6 +1,9 @@
 # MachineLearningTutorial
 
-机器学习指南 Created By C. L. Wang
+机器学习指南 
+
+Created By C. L. Wang
+Email: morndragon@126.com
 
 1. [TensorFlow 框架初探](http://www.jianshu.com/p/73ae26b3ea70) （含有项目配置，虚拟环境）
 
@@ -11,3 +14,6 @@
 4. [模型可视化 TensorBoard](http://www.jianshu.com/p/f3e51ee564ab)
 
 5. [TensorFlow 的 GPU](http://www.jianshu.com/p/2ccfa4170750)
+
+6. [TensorFlow 的 分布式架构](http://www.jianshu.com/p/b6e25d0a9399)
+

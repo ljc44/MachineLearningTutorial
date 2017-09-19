@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Copyright 2016 The TensorFlow Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -85,7 +87,6 @@ flags.DEFINE_string("ps_hosts", "hd1:2222",
 flags.DEFINE_string("worker_hosts", "learn:2222,docker01:2222",
                     "Comma-separated list of hostname:port pairs")
 
-
 flags.DEFINE_string("job_name", None, "job name: worker or ps")
 
 FLAGS = flags.FLAGS
@@ -94,10 +95,19 @@ IMAGE_PIXELS = 28
 
 
 def main(unused_argv):
-    mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True)
+    """
+    执行命令，worker服务器与ps服务器需要提前设定
+    python mnist_replica.py --job_name=ps --task_index=0 
+    python mnist_replica.py --job_name=worker --task_index=0 
+    python mnist_replica.py --job_name=worker --task_index=1 
+    :param unused_argv: 
+    :return: 
+    """
+    mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True)  # 下载数据
     if FLAGS.download_only:
         sys.exit(0)
 
+    # 执行时，需要制定名称和任务ID，任务id为0，是主任务，名称ps是参数服务器，worker是计算服务器
     if FLAGS.job_name is None or FLAGS.job_name == "":
         raise ValueError("Must specify an explicit `job_name`")
     if FLAGS.task_index is None or FLAGS.task_index == "":
@@ -111,20 +121,20 @@ def main(unused_argv):
     worker_spec = FLAGS.worker_hosts.split(",")
 
     # Get the number of workers.
-    num_workers = len(worker_spec)
+    num_workers = len(worker_spec)  # worker的数量
 
-    cluster = tf.train.ClusterSpec({
-        "ps": ps_spec,
-        "worker": worker_spec})
+    # 创建集群
+    cluster = tf.train.ClusterSpec({"ps": ps_spec, "worker": worker_spec})
 
     if not FLAGS.existing_servers:
         # Not using existing servers. Create an in-process server.
-        server = tf.train.Server(
-            cluster, job_name=FLAGS.job_name, task_index=FLAGS.task_index)
+        server = tf.train.Server(cluster, job_name=FLAGS.job_name, task_index=FLAGS.task_index)
         if FLAGS.job_name == "ps":
             server.join()
 
-    is_chief = (FLAGS.task_index == 0)
+    is_chief = (FLAGS.task_index == 0)  # id为0是主worker
+
+    # 含有GPU使用GPU，没有使用CPU
     if FLAGS.num_gpus > 0:
         # Avoid gpu allocation conflict: now allocate task_num -> #gpu
         # for each worker in the corresponding machine
@@ -134,14 +144,15 @@ def main(unused_argv):
         # Just allocate the CPU to worker server
         cpu = 0
         worker_device = "/job:worker/task:%d/cpu:%d" % (FLAGS.task_index, cpu)
+
     # The device setter will automatically place Variables ops on separate
     # parameter servers (ps). The non-Variable ops will be placed on the workers.
     # The ps use CPU and workers use corresponding GPU
-    with tf.device(
-        tf.train.replica_device_setter(
-            worker_device=worker_device,
-            ps_device="/job:ps/cpu:0",
-            cluster=cluster)):
+    with tf.device(tf.train.replica_device_setter(
+        worker_device=worker_device,
+        ps_device="/job:ps/cpu:0",
+        cluster=cluster)):
+
         global_step = tf.Variable(0, name="global_step", trainable=False)
 
         # Variables of the hidden layer
@@ -172,6 +183,7 @@ def main(unused_argv):
 
         opt = tf.train.AdamOptimizer(FLAGS.learning_rate)
 
+        # 同步训练模式
         if FLAGS.sync_replicas:
             if FLAGS.replicas_to_aggregate is None:
                 replicas_to_aggregate = num_workers
@@ -250,6 +262,7 @@ def main(unused_argv):
         time_begin = time.time()
         print("Training begins @ %f" % time_begin)
 
+        # 执行过程
         local_step = 0
         while True:
             # Training feed
@@ -260,7 +273,7 @@ def main(unused_argv):
             local_step += 1
 
             now = time.time()
-            time.sleep(2)
+            time.sleep(2)  # 延迟两秒处理
             print("%f: Worker %d: training step %d done (global step: %d)" %
                   (now, FLAGS.task_index, local_step, step))
 
