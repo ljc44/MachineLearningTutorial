@@ -26,7 +26,8 @@ scipy==0.19.1
 six==1.10.0
 sklearn==0.0
 subprocess32==3.2.7
-tensorflow-gpu==1.2.0
+#tensorflow-gpu==1.2.0
+tensorflow==1.2.1
 thrift==0.10.0
 thriftpy==0.3.9
 Werkzeug==0.12.2

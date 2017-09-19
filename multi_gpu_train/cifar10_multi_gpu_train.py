@@ -157,7 +157,7 @@ def train():
             initializer=tf.constant_initializer(0), trainable=False)
 
         # Calculate the learning rate schedule.
-        # 每个批次的训练数，
+        # 每个批次的训练数
         num_batches_per_epoch = (cifar10.NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN /
                                  FLAGS.batch_size)  # batch_size是128，50000 / 128=390.625
         decay_steps = int(num_batches_per_epoch * cifar10.NUM_EPOCHS_PER_DECAY)  # 每个批次需要衰减的次数
@@ -176,6 +176,7 @@ def train():
         images, labels = cifar10.distorted_inputs()  # 获取图片资源和标签
         batch_queue = tf.contrib.slim.prefetch_queue.prefetch_queue(
             [images, labels], capacity=2 * FLAGS.num_gpus)  # 使用预加载的队列
+
         # Calculate the gradients for each model tower.
         tower_grads = []
         with tf.variable_scope(tf.get_variable_scope()):  # 变量的名称
@@ -254,7 +255,7 @@ def train():
 
         for step in xrange(FLAGS.max_steps):
             start_time = time.time()
-            _, loss_value = sess.run([train_op, loss])
+            _, loss_value = sess.run([train_op, loss])  # 训练并获取单词的损失值。
             duration = time.time() - start_time
 
             assert not np.isnan(loss_value), 'Model diverged with loss = NaN'
