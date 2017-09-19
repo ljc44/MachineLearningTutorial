@@ -9,3 +9,5 @@
 3. [多层感知机 MLP](http://www.jianshu.com/p/ac5c1d83dc71)
 
 4. [模型可视化 TensorBoard](http://www.jianshu.com/p/f3e51ee564ab)
+
+5. [TensorFlow 的 GPU](http://www.jianshu.com/p/2ccfa4170750)
