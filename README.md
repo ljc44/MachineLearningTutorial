@@ -2,8 +2,7 @@
 
 机器学习指南 
 
-Created By C. L. Wang
-Email: morndragon@126.com
+Created By C. L. Wang, Email: morndragon@126.com
 
 1. [TensorFlow 框架初探](http://www.jianshu.com/p/73ae26b3ea70) （含有项目配置，虚拟环境）
 
