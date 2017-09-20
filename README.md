@@ -16,6 +16,8 @@ Created By C. L. Wang, Email: morndragon@126.com
 
 6. [TensorFlow 的 分布式架构](http://www.jianshu.com/p/b6e25d0a9399)
 
+7. [TensorFlow Android 版](http://www.jianshu.com/p/dff6ad105c8e)
+
 其余：
 
 - [威尔逊得分 Wilson Score 排序算法](http://www.jianshu.com/p/4d2b45918958)
