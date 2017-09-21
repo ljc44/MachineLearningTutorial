@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Created by C.L.Wang
+# 生成Android集成TF的测试模型
 
 import tensorflow as tf
 from tensorflow.python.tools import freeze_graph, optimize_for_inference_lib
