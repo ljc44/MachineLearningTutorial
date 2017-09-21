@@ -23,3 +23,5 @@ Created By C. L. Wang, Email: morndragon@126.com
 - [威尔逊得分 Wilson Score 排序算法](http://www.jianshu.com/p/4d2b45918958)
 
 - [百度 OCR 文字识别的接口测试](http://www.jianshu.com/p/a1688fed63e3)
+
+- [TensorFlow集成Android工程的框架](http://www.jianshu.com/p/870e9a54749a)
