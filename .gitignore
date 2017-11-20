@@ -110,3 +110,4 @@ auto_encoder/IMAGE_data
 multi_gpu_train/cifar10_data/
 movie_ranking/data
 tests/data
+MNIST_data.tar
